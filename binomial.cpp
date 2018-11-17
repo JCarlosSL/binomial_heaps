@@ -63,36 +63,75 @@ auto binomial<T>::deletemin(){
 		list1.push_front(*itmin);
 		++itmin;
 	}
-	merge(list1);
+	actualizar(list1);
 
 }
 
 template <class T>
-void binomial<T>::merge(std::list<nodob<T>*> &list1){
+void binomial<T>::actualizar(std::list<nodob<T>*> &list1){
 	auto it=list1.begin();
-	auto r=root.begin();
+	auto r=root;
+	auto itr=r.begin();
+	root.clear();
 	while(it!=list1.end()){
-		if((*it)->grade < (*r)->grade){
-			root.push_front(*it);
-		}
-		else if((*it)->grade==(*r)->grade){
-			auto p=_union(*it,*r);
-			if((*r)==p){
-				r=it;	
-			}
-			if(r!=root.end()){
-				++r;
+		if((*it)->grade==(*itr)->grade){
+			auto p=_union(*it,*itr);
+			if(p==(*it)){
+				root.push_back(*itr);
 			}
 			else{
-				break;
+				root.push_back(*it);
 			}
-			
+			++itr;
 		}
 		else{
 			root.push_back(*it);
 		}
 		++it;
 	}
+	while(itr!=r.end()){
+		root.push_back(*itr);
+		++itr;
+	}
+}
+
+template<class T>
+void binomial<T>::reduccion(nodob<T> **&p){
+	auto it=getmin();
+	T min=(*it)->date-1;
+	while((*p)->father){
+		(*p)->date=(*p)->father->date;
+		(*p)->father->date=min;
+		p=&(*p)->father;
+	}
+
+}
+
+template<class T>
+void binomial<T>::_delete(T d){
+	nodob<T> **p;
+	if(findson(d,root,p)){
+		reduccion(p);
+		deletemin();
+	}
+}
+
+template<class T>
+bool binomial<T>::findson(T d,std::list<nodob<T>*> list1,nodob<T> **&p){
+	auto q=list1.begin();
+	while(q!=list1.end()){
+			if((*q)->date==d){
+				p=&(*q);
+				return 1;
+			}
+			if((*q)->date > d){
+				++q;
+			}
+			else{
+				return findson(d,(*q)->m_son,p);
+			}
+	}
+	return 0;
 }
 
 

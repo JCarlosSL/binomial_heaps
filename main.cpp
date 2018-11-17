@@ -11,6 +11,7 @@ int main(){
 		carlos.insert(i);
 	}
 	//carlos.deletemin();
+	carlos._delete(12);
 	carlos.print();
 	return 0;
 }

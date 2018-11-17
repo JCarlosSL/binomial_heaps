@@ -13,8 +13,11 @@ public:
 	auto _union(nodob<T>* &,nodob<T>* &);
 	auto getmin();
 	auto deletemin();
-	void merge(std::list<nodob<T>*> &list1);
+	void actualizar(std::list<nodob<T>*> &list1);
 	bool find(T d,nodob<T> **&p);
+	bool findson(T d,std::list<nodob<T>*> list1,nodob<T> **&);
+	void _delete(T d);
+	void reduccion(nodob<T> **&p);
 	void print();
 	void print(std::list<nodob<T>*> p,int c,std::ofstream& a);
 
