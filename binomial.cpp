@@ -93,6 +93,21 @@ void binomial<T>::actualizar(std::list<nodob<T>*> &list1){
 		root.push_back(*itr);
 		++itr;
 	}
+	auto s=root.begin();
+	auto t=root.begin();
+	++s;
+	while(s!=root.end()){
+		if((*t)->grade==(*s)->grade){
+			if((*t)->date < (*s)->date){
+				auto p=t;
+				t=s;s=p;
+			}
+			auto p=_union(*t,*s);
+			root.remove(p);
+		}
+		t=s;
+		++s;
+	}
 }
 
 template<class T>
